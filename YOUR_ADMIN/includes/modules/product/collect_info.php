@@ -4,7 +4,7 @@
  * @copyright Copyright 2003-2019 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version $Id: DrByte 2019 Jan 04 Modified in v1.5.6a $
+ * @version $Id: Zen4All 2019 Jan 20 Modified in v1.5.6b $
  */
 if (!defined('IS_ADMIN_FLAG')) {
   die('Illegal Access');
@@ -41,15 +41,18 @@ $parameters = array(
   'products_price_sorter' => '0',
   'master_categories_id' => ''
 );
-/* BOF Envelope module 1 of 3 */
-$parameters['products_qty_envelope'] = '';
-/* EOF Envelope module 1 of 3 */
+/* BOF Envelope module 1 of 4 */
+  $parameters['products_qty_envelope'] = 0;
+/* EOF Envelope module 1 of 4 */
 $pInfo = new objectInfo($parameters);
 
 if (isset($_GET['pID']) && empty($_POST)) {
-/* BOF Envelope module 2 of 3 */
+/* BOF Envelope module 2 of 4 */
+$extra_fields = ', p.products_qty_envelope, p.products_cost, p.products_markup, p.products_margin_gross_dollar, p.products_margin_gross_percent';
+/* EOF Envelope module 2 of 4 */
+
   $product = $db->Execute("SELECT pd.products_name, pd.products_description, pd.products_url,
-                                  p.products_id, p.products_quantity, p.products_model, p.products_qty_envelope,
+                                  p.products_id, p.products_quantity, p.products_model,
                                   p.products_image, p.products_price, p.products_virtual, p.products_weight,
                                   p.products_date_added, p.products_last_modified,
                                   date_format(p.products_date_available, '%Y-%m-%d') as
@@ -61,12 +64,15 @@ if (isset($_GET['pID']) && empty($_POST)) {
                                   p.products_sort_order,
                                   p.products_discount_type, p.products_discount_type_from,
                                   p.products_price_sorter, p.master_categories_id
+                     ## EOF Envelope module 3 of 4
+                                  " . $extra_fields . "
+                     ## EOF Envelope module 3 of 4
                            FROM " . TABLE_PRODUCTS . " p,
                                 " . TABLE_PRODUCTS_DESCRIPTION . " pd
                            WHERE p.products_id = " . (int)$_GET['pID'] . "
                            AND p.products_id = pd.products_id
                            AND pd.language_id = " . (int)$_SESSION['languages_id']);
-/* EOF Envelope module 2 of 3 */
+
   $pInfo->updateObjectInfo($product->fields);
 } elseif (zen_not_null($_POST)) {
   $pInfo->updateObjectInfo($_POST);
@@ -390,14 +396,14 @@ for ($i = 0, $n = sizeof($tax_class_array); $i < $n; $i++) {
         <?php echo zen_draw_input_field('products_model', htmlspecialchars(stripslashes($pInfo->products_model), ENT_COMPAT, CHARSET, TRUE), zen_set_field_length(TABLE_PRODUCTS, 'products_model') . ' class="form-control"'); ?>
     </div>
   </div>
-<?php /* BOF Envelope module 3 of 3 */ ?>
+<?php /* BOF Envelope module 4 of 4 */ ?>
   <div class="form-group">
-    <?php echo zen_draw_label(TEXT_PRODUCTS_QTY_ENVELOPE, 'products_qty_envelope', 'class="col-sm-3 control-label"'); ?>
+      <?php echo zen_draw_label(TEXT_PRODUCTS_QTY_ENVELOPE, 'products_qty_envelope', 'class="col-sm-3 control-label"'); ?>
     <div class="col-sm-9 col-md-6">
-      <?php echo zen_draw_input_field('products_qty_envelope', $pInfo->products_qty_envelope, zen_set_field_length(TABLE_PRODUCTS, 'products_qty_envelope')); ?>
+        <?php echo zen_draw_input_field('products_qty_envelope', $pInfo->products_qty_envelope, zen_set_field_length(TABLE_PRODUCTS, 'products_qty_envelope') . ' class="form-control"'); ?>
     </div>
   </div>
-<?php /* EOF Envelope module 3 of 3 */ ?>
+<?php /* EOF Envelope module 4 of 4 */ ?>
   <?php
   $dir_info = zen_build_subdirectories_array(DIR_FS_CATALOG_IMAGES);
   $default_directory = substr($pInfo->products_image, 0, strpos($pInfo->products_image, '/') + 1);
@@ -415,7 +421,7 @@ for ($i = 0, $n = sizeof($tax_class_array); $i < $n; $i++) {
         </div>
         <div class="row">&nbsp;</div>
         <div class="row">
-            <?php echo zen_draw_label(TEXT_IMAGE_CURRENT, 'products_previous_image', 'class="conrol-label"') . '&nbsp;' . ($pInfo->products_image != '' ? $pInfo->products_image : NONE); ?>
+            <?php echo zen_draw_label(TEXT_IMAGE_CURRENT, 'products_previous_image', 'class="control-label"') . '&nbsp;' . ($pInfo->products_image != '' ? $pInfo->products_image : NONE); ?>
             <?php echo zen_draw_hidden_field('products_previous_image', $pInfo->products_image); ?>
         </div>
         <div class="row">&nbsp;</div>
