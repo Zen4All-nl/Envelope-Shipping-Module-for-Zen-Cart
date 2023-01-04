@@ -13,7 +13,7 @@ Getest op Zen-Cart 1.5.6c
 
 BACK UP BACK UP BACK UP
 
-- Installeer envelope-install.sql door deze in te lezen in de MySQL database via phpmyadmin of door de file te openen en de inhoud te kopieëren naar admin --> hulpmiddelen --> installeer sql patches.
+- Installeer envelope-install.sql door deze in te lezen in de MySQL database via phpmyadmin of door de file te openen en de inhoud te kopieÃ«ren naar admin --> hulpmiddelen --> installeer sql patches.
 - Kopieer de map includes via FTP naar de serevr. Dit zijn allemaal nieuwe files dus geen overwrites.
 - De files in admin zijn allemaal overwrites, als je in het verleden niets aan deze files hebt verandert kan je ze gewoon uploaden, anders gebruik bijv. WinMerge om de files samentevoegen met de bestaande files op de server.
 - Activeer de verzendmodule in admin --> modules --> verzendmodules, LET OP: het bolletje blijft oranje!
