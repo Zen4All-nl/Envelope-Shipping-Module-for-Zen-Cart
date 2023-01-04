@@ -1,1 +1,1 @@
-ALTER TABLE `products` DROP `products_qty_envelope`;
+ALTER TABLE products DROP products_qty_envelope;
